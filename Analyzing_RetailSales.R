@@ -1,4 +1,5 @@
-
+library(lubridate)
+library(ggplot2)
 
 
 
@@ -26,7 +27,14 @@ head(stores_data_set, n = 2)
 features_data_set$Date <- as.Date(features_data_set$Date, format = "%d/%m/%y")
 sales_data_set$Date <- as.Date(sales_data_set$Date, format = "%d/%m/%y")
 
+features_data_set$Year <- ""
+features_data_set$Month <- ""
+sales_data_set$Month <- ""
+sales_data_set$Year <- ""
 
 
-
+features_data_set$Month <- month(features_data_set$Date)
+features_data_set$Year <- year(features_data_set$Date)
+sales_data_set$Month <- month(sales_data_set$Date)
+sales_data_set$Year <- year(sales_data_set$Date)
 
