@@ -1,6 +1,6 @@
 library(lubridate)
 library(ggplot2)
-
+library(tidyverse)
 
 
 # Data Loading 
@@ -24,17 +24,37 @@ head(stores_data_set, n = 2)
 
 # Data type converting
 
-features_data_set$Date <- as.Date(features_data_set$Date, format = "%d/%m/%y")
-sales_data_set$Date <- as.Date(sales_data_set$Date, format = "%d/%m/%y")
+features_data_set$Year <- substr(features_data_set$Date, 7, 10)
+features_data_set$Month <- substr(features_data_set$Date, 4, 5)
+features_data_set$Day <- substr(features_data_set$Date, 1, 2)
 
-features_data_set$Year <- ""
-features_data_set$Month <- ""
-sales_data_set$Month <- ""
-sales_data_set$Year <- ""
+sales_data_set$Year <- substr(sales_data_set$Date, 7, 10)
+sales_data_set$Month <- substr(sales_data_set$Date, 4, 5)
+sales_data_set$Day <- substr(sales_data_set$Date, 1, 2)
+
+sales_data_set$Month <- as.factor(sales_data_set$Month)
+sales_data_set$Year <- as.factor(sales_data_set$Year)
+sales_data_set$Day <- as.factor(sales_data_set$Day)
 
 
-features_data_set$Month <- month(features_data_set$Date)
-features_data_set$Year <- year(features_data_set$Date)
-sales_data_set$Month <- month(sales_data_set$Date)
-sales_data_set$Year <- year(sales_data_set$Date)
+# head(sales_data_set, n =2)
+
+
+
+
+sales_data_set$Weekly_SalesC <- as.character(sales_data_set$Weekly_Sales)
+sales_data_set$Weekly_SalesC <- as.numeric(sales_data_set$Weekly_SalesC,2)
+
+
+sales_data_set %>% distinct(Store)
+
+# head(sales_data_set, n =2)
+
+
+YearSales <- sales_data_set %>% group_by(Year) %>% summarise(YearSales = sum(Weekly_SalesC))
+
+sales_data_set %>% summarise(MeanSale = mean(Weekly_SalesC))
+
+ggplot(YearSales, aes(Year, YearSales)) +
+  geom_col()
 
