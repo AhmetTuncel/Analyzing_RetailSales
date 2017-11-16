@@ -37,24 +37,42 @@ sales_data_set$Year <- as.factor(sales_data_set$Year)
 sales_data_set$Day <- as.factor(sales_data_set$Day)
 
 
-# head(sales_data_set, n =2)
+sales_data_set$Weekly_Sales <- as.character(sales_data_set$Weekly_Sales)
+sales_data_set$Weekly_Sales <- as.numeric(sales_data_set$Weekly_Sales,2)
 
 
 
-
-sales_data_set$Weekly_SalesC <- as.character(sales_data_set$Weekly_Sales)
-sales_data_set$Weekly_SalesC <- as.numeric(sales_data_set$Weekly_SalesC,2)
+# Join Sales and Store data set
 
 
-sales_data_set %>% distinct(Store)
-
-# head(sales_data_set, n =2)
+SalesStore<- left_join(sales_data_set, stores_data_set, by = "Store") %>% select() 
 
 
-YearSales <- sales_data_set %>% group_by(Year) %>% summarise(YearSales = sum(Weekly_SalesC))
 
-sales_data_set %>% summarise(MeanSale = mean(Weekly_SalesC))
+head(SalesStore, n =2)
+str(SalesStore)
+
+head(sales_data_set, n =2)
+str(sales_data_set)
+
+# Yýllýk satýþlarýna göre
+
+YearSales <- sales_data_set %>% group_by(Year) %>% summarise(YearSales = sum(Weekly_Sales))
 
 ggplot(YearSales, aes(Year, YearSales)) +
-  geom_col()
+        geom_col()
+
+
+ggplot(sales_data_set %>% filter(Year == 2012),
+       aes(y = Weekly_Sales, x = Store)) +
+        geom_point()
+
+# ggplot(SalesStore, aes(x = Year, fill = Type)) + geom_bar(position = "dodge")
+# 
+# 
+# 
+# 
+# ggplot(SalesStore %>% group_by(Year,Type) %>% summarise(TypeSales = sum(Weekly_Sales)), aes(x = Year, y = TypeSales, fill = Type)) + geom_bar(position = "dodge")
+
+
 
