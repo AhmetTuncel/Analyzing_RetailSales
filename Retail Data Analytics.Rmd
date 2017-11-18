@@ -1,0 +1,92 @@
+---
+title: "Retail Data Analytics"
+author: "Ahmet Tuncel"
+date: "18 Kasým 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+# Data Cleaning & Preparing
+
+## Loading Libraries
+
+```{r}
+library(lubridate)
+library(ggplot2)
+library(tidyverse)
+```
+
+
+##Data Loading
+
+```{r warning=FALSE}
+features_data_set <- read.csv2("Features data set.csv", header = TRUE, sep = ",")
+sales_data_set <- read.csv2("sales data-set.csv", header = TRUE, sep = ",")
+stores_data_set <- read.csv2("stores data-set.csv", header = TRUE, sep = ",")
+
+str(features_data_set)
+str(sales_data_set)
+str(stores_data_set)
+
+
+```
+
+
+
+### Data type converting
+
+
+```{r}
+
+features_data_set$Year <- substr(features_data_set$Date, 7, 10)
+features_data_set$Month <- substr(features_data_set$Date, 4, 5)
+features_data_set$Day <- substr(features_data_set$Date, 1, 2)
+
+sales_data_set$Year <- substr(sales_data_set$Date, 7, 10)
+sales_data_set$Month <- substr(sales_data_set$Date, 4, 5)
+sales_data_set$Day <- substr(sales_data_set$Date, 1, 2)
+
+sales_data_set$Weekly_Sales <- as.character(sales_data_set$Weekly_Sales)
+sales_data_set$Weekly_Sales <- as.numeric(sales_data_set$Weekly_Sales,2)
+
+```
+
+### How many Store
+
+```{r}
+ ggplot(stores_data_set, aes(Type, fill = Type ) ) +
+  geom_bar() +
+  xlab("Type of Store") + ylab("Count of Store")
+
+```
+
+
+
+### Sales of Years
+```{r}
+
+YearSales <- sales_data_set %>% group_by(Year) %>% summarise(YearSales = sum(Weekly_Sales))
+
+
+ggplot(YearSales, aes(Year, YearSales)) +
+        geom_col()
+
+```
+
+### Store Size Analyze
+
+```{r}
+SalesStore <- left_join(sales_data_set, stores_data_set, by = "Store")
+
+ggplot(SalesStore, aes(Type, Size) ) +
+  geom_point()
+```
+
