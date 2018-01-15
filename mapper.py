@@ -1,8 +1,12 @@
+#!/usr/bin/env python
+
 import sys
 
+# input comes from STDIN (standard input)
 for line in sys.stdin:
-    line = line.strip()
-    unpacked = line.split(",")
-    Name,Gender = line.split(",")
-    results = [Gender, "1"]
-    print("\t".join(results))
+
+	line = line.strip()
+	unpacked = line.split(",")
+	name, gender = line.split(",")
+	results = [gender, "1"]
+	print("\t".join(results))
