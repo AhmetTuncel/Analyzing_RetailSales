@@ -1,0 +1,13 @@
+hdfs dfs -put /home/ahmet/ign.csv /data/
+
+
+
+hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.5.jar \
+-input /data/ign.csv \
+-output /data/outputign \
+-mapper /home/ahmet/ignmapper.py \
+-reducer /home/ahmet/ignreducer.py \
+-file /home/ahmet/ignmapper.py \
+-file /home/ahmet/ignreducer.py
+
+
