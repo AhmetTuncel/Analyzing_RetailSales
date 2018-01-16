@@ -1,0 +1,125 @@
+
+veriyi localden hdfs'e attık.
+hadoopuser@ahmet-VirtualBox:/usr/local/hadoop$ hdfs dfs -put /home/ahmet/MarketClassification.csv /data/
+
+mapper ve reducer kodlarını execut edilebilir hale getirdik.
+ahmet@ahmet-VirtualBox:/usr/local/hadoop$ chmod -R 777 /home/ahmet/MCmapper.py 
+ahmet@ahmet-VirtualBox:/usr/local/hadoop$ chmod -R 777 /home/ahmet/MCreducer.py 
+
+map reduce edecek scripti yazdık ve execute ettik.
+hadoopuser@ahmet-VirtualBox:/usr/local/hadoop$ hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.5.jar \
+> -input /data/MarketClassification.csv \
+> -output /data/outputmarket \
+> -mapper /home/ahmet/MCmapper.py \
+> -reducer /home/ahmet/MCreducer.py \
+> -file /home/ahmet/MCmapper.py \
+> -file /home/ahmet/MCreducer.py
+
+
+executin log file
+
+18/01/16 00:57:22 WARN streaming.StreamJob: -file option is deprecated, please use generic option -files instead.
+packageJobJar: [/home/ahmet/MCmapper.py, /home/ahmet/MCreducer.py, /tmp/hadoop-unjar5234883686757208452/] [] /tmp/streamjob2991407385052687818.jar tmpDir=null
+18/01/16 00:57:23 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+18/01/16 00:57:24 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+18/01/16 00:57:25 WARN hdfs.DFSClient: Caught exception 
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.closeResponder(DFSOutputStream.java:716)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.endBlock(DFSOutputStream.java:476)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.run(DFSOutputStream.java:652)
+18/01/16 00:57:25 INFO mapred.FileInputFormat: Total input paths to process : 1
+18/01/16 00:57:25 WARN hdfs.DFSClient: Caught exception 
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.closeResponder(DFSOutputStream.java:716)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.endBlock(DFSOutputStream.java:476)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.run(DFSOutputStream.java:652)
+18/01/16 00:57:25 WARN hdfs.DFSClient: Caught exception 
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.closeResponder(DFSOutputStream.java:716)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.endBlock(DFSOutputStream.java:476)
+	at org.apache.hadoop.hdfs.DFSOutputStream$DataStreamer.run(DFSOutputStream.java:652)
+18/01/16 00:57:25 INFO mapreduce.JobSubmitter: number of splits:2
+18/01/16 00:57:25 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1516047282466_0004
+18/01/16 00:57:26 INFO impl.YarnClientImpl: Submitted application application_1516047282466_0004
+18/01/16 00:57:26 INFO mapreduce.Job: The url to track the job: http://ahmet-VirtualBox:8088/proxy/application_1516047282466_0004/
+18/01/16 00:57:26 INFO mapreduce.Job: Running job: job_1516047282466_0004
+18/01/16 00:57:36 INFO mapreduce.Job: Job job_1516047282466_0004 running in uber mode : false
+18/01/16 00:57:36 INFO mapreduce.Job:  map 0% reduce 0%
+18/01/16 00:57:49 INFO mapreduce.Job:  map 100% reduce 0%
+18/01/16 00:57:57 INFO mapreduce.Job:  map 100% reduce 100%
+18/01/16 00:57:58 INFO mapreduce.Job: Job job_1516047282466_0004 completed successfully
+18/01/16 00:57:58 INFO mapreduce.Job: Counters: 49
+	File System Counters
+		FILE: Number of bytes read=1348
+		FILE: Number of bytes written=377752
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=2677
+		HDFS: Number of bytes written=58
+		HDFS: Number of read operations=9
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Data-local map tasks=2
+		Total time spent by all maps in occupied slots (ms)=19499
+		Total time spent by all reduces in occupied slots (ms)=5338
+		Total time spent by all map tasks (ms)=19499
+		Total time spent by all reduce tasks (ms)=5338
+		Total vcore-milliseconds taken by all map tasks=19499
+		Total vcore-milliseconds taken by all reduce tasks=5338
+		Total megabyte-milliseconds taken by all map tasks=19966976
+		Total megabyte-milliseconds taken by all reduce tasks=5466112
+	Map-Reduce Framework
+		Map input records=66
+		Map output records=66
+		Map output bytes=1210
+		Map output materialized bytes=1354
+		Input split bytes=206
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=3
+		Reduce shuffle bytes=1354
+		Reduce input records=66
+		Reduce output records=3
+		Spilled Records=132
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=361
+		CPU time spent (ms)=2100
+		Physical memory (bytes) snapshot=581980160
+		Virtual memory (bytes) snapshot=5843066880
+		Total committed heap usage (bytes)=398262272
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=2471
+	File Output Format Counters 
+		Bytes Written=58
+18/01/16 00:57:58 INFO streaming.StreamJob: Output directory: /data/outputmarket
+
+
+Çıktımızı kontrol ettik.
+
+hadoopuser@ahmet-VirtualBox:/usr/local/hadoop$ hdfs dfs -cat /data/outputmarket/part-00000
+Developed Market	22
+Emerging Market	24
+Frontier Market	20
+
